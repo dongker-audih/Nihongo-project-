@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5ff">
+  <title>Nihongo Quest</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-card">
+      <div class="brand-mark">あ</div>
+      <p class="eyebrow">YOUR JAPANESE ADVENTURE</p>
+      <h1>Nihongo <span>Quest</span></h1>
+      <p class="muted">Belajar sedikit demi sedikit. Satu karakter, satu langkah.</p>
+      <form id="loginForm">
+        <label for="username">Username pemain</label>
+        <input id="username" name="username" minlength="3" maxlength="18" pattern="[A-Za-z0-9_]+" placeholder="contoh: neko_15" autocomplete="username" required>
+        <small>3–18 karakter, gunakan huruf, angka, atau underscore.</small>
+        <button class="primary full" type="submit">Mulai petualangan <span>→</span></button>
+      </form>
+      <p class="tiny">Login tanpa password. Gunakan username yang sama untuk membuka progresmu.</p>
+      <div id="loginError" class="error" role="alert"></div>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <a class="brand" href="#"><span class="brand-mini">あ</span> Nihongo <b>Quest</b></a>
+      <div class="top-stats">
+        <span class="streak">✦ <b id="level">Lv. 1</b></span>
+        <span class="xp-pill">⚡ <b id="xp">0</b> XP</span>
+        <button id="logoutBtn" class="avatar" title="Ganti akun">☺</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="main-column">
+        <div class="welcome-row">
+          <div><p class="eyebrow">KONNICHIWA, <span id="playerName">PLAYER</span>!</p><h1>Siap belajar hari ini? <span>🌸</span></h1><p class="muted">Pelan-pelan, yang penting konsisten.</p></div>
+          <div class="mascot">🦊</div>
+        </div>
+
+        <section class="progress-card">
+          <div class="progress-top"><div><span class="eyebrow light">PERJALANANMU</span><h2>Fondasi JLPT N5</h2></div><div class="progress-percent" id="progressPercent">0%</div></div>
+          <div class="bar"><div id="progressBar"></div></div>
+          <div class="progress-bottom"><span id="completedCount">0 pelajaran selesai</span><span id="nextLevel">0 / 100 XP ke level berikutnya</span></div>
+        </section>
+
+        <div class="section-heading"><div><p class="eyebrow">LEARN BY DOING</p><h2>Jalur belajar</h2></div><span class="tiny">Pilih misi pertamamu</span></div>
+        <div class="course-grid" id="courseGrid">
+          <button class="course-card active" data-course="hiragana"><span class="course-icon pink">あ</span><span><b>Hiragana</b><small>Kenali karakter dasar</small></span><span class="arrow">→</span></button>
+          <button class="course-card" data-course="katakana"><span class="course-icon purple">カ</span><span><b>Katakana</b><small>Kata serapan</small></span><span class="arrow">→</span></button>
+          <button class="course-card" data-course="vocab"><span class="course-icon yellow">単</span><span><b>Kosakata</b><small>Kata sehari-hari</small></span><span class="arrow">→</span></button>
+          <button class="course-card" data-course="kanji"><span class="course-icon green">漢</span><span><b>Kanji</b><small>Kanji dasar N5</small></span><span class="arrow">→</span></button>
+          <button class="course-card wide" data-course="grammar"><span class="course-icon blue">文</span><span><b>Tata bahasa</b><small>Partikel dan pola kalimat</small></span><span class="arrow">→</span></button>
+        </div>
+
+        <section class="lesson-panel">
+          <div class="lesson-head"><div><p class="eyebrow" id="lessonEyebrow">HIRAGANA • LEVEL 1</p><h2 id="lessonTitle">Vokal dasar</h2></div><span class="lesson-xp">⚡ +10 XP</span></div>
+          <p class="muted" id="lessonIntro">Lima karakter pertama dalam hiragana.</p>
+          <div id="lessonContent"></div>
+          <div class="lesson-actions"><button id="prevBtn" class="secondary">← Sebelumnya</button><button id="startBtn" class="primary">Mulai latihan <span>→</span></button></div>
+        </section>
+      </section>
+
+      <aside class="side-column">
+        <section class="side-card daily-card"><div class="side-title"><h3>Target harian</h3><span>☀️</span></div><div class="daily-number"><b id="dailyXp">0</b><span>/ 30 XP</span></div><div class="bar small-bar"><div id="dailyBar"></div></div><p class="tiny">Sedikit latihan hari ini tetap berarti!</p></section>
+        <section class="side-card"><div class="side-title"><h3>Catatan sulit</h3><span>🔖</span></div><p class="tiny muted">Kata atau karakter yang kamu tandai akan muncul di sini.</p><div id="difficultList" class="difficult-list"><div class="empty-state">Belum ada. Tandai materi yang terasa sulit saat belajar.</div></div></section>
+        <section class="side-card tip-card"><span class="tip-icon">💡</span><b>Tips belajar</b><p id="tipText">Hiragana adalah fondasi membaca bahasa Jepang. Coba ucapkan setiap karakter dengan suara pelan.</p></section>
+        <button id="reviewBtn" class="review-button">↻ Ulangi materi sulit</button>
+      </aside>
+    </main>
+    <footer>Made for curious Japanese learners <span>✿</span></footer>
+  </div>
+
+  <div id="quizModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="quiz-card">
+      <div class="quiz-top"><span class="eyebrow">LATIHAN MINI</span><button id="closeQuiz" class="close-btn" aria-label="Tutup">×</button></div>
+      <div class="quiz-progress"><div id="quizBar"></div></div>
+      <p class="muted" id="quizCounter">Pertanyaan 1 dari 5</p>
+      <h2 id="quizTitle">Apa bacaan karakter ini?</h2>
+      <div id="questionArea"></div>
+      <div id="answerFeedback" class="feedback"></div>
+      <button id="nextQuestion" class="primary full" disabled>Periksa jawaban</button>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
